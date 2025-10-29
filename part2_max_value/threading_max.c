@@ -9,7 +9,7 @@ int array_size;
 int chunk_size;
 int global_max;
 pthread_mutex_t lock;
-
+// Each thread computes its local maximum and updates global max
 void *find_local_max(void *arg) {
     int id = *(int *)arg;
     int start = id * chunk_size;
@@ -47,12 +47,12 @@ int main(int argc, char *argv[]) {
     int ids[num_workers];
 
     clock_t start = clock();
-
+// Create Threads
     for (int i = 0; i < num_workers; i++) {
         ids[i] = i;
         pthread_create(&threads[i], NULL, find_local_max, &ids[i]);
     }
-
+// Wait for all threads
     for (int i = 0; i < num_workers; i++)
         pthread_join(threads[i], NULL);
 
@@ -67,3 +67,4 @@ int main(int argc, char *argv[]) {
     free(array);
     return 0;
 }
+
