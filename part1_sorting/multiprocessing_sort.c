@@ -67,8 +67,9 @@ int main(int argc, char *argv[]) {
         int end_idx = (i == num_workers - 1) ? array_size : start_idx + chunk_size;
         read(pipes[i][0], array + start_idx, (end_idx - start_idx) * sizeof(int));
         close(pipes[i][0]);
-        wait(NULL);
+        
     }
+    for (int i = 0; i < num_workers; i++) wait(NULL);
 
     // Merge chunks 
     int merged_size = chunk_size;
@@ -91,4 +92,5 @@ int main(int argc, char *argv[]) {
     free(array);
     return 0;
 }
+
 
