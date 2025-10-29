@@ -4,10 +4,12 @@
 #include <sys/wait.h>
 #include <time.h>
 
+// Compare Function
+
 int compare(const void *a, const void *b) {
     return (*(int *)a - *(int *)b);
 }
-
+// Merge ttwo sorted Subarrays
 void merge(int *arr, int left, int mid, int right) {
     int n1 = mid - left + 1, n2 = right - mid;
     int *L = malloc(n1 * sizeof(int));
@@ -41,7 +43,7 @@ int main(int argc, char *argv[]) {
 
     int pipes[num_workers][2];
     clock_t start = clock();
-
+// Create Child process for chunk sorting
     for (int i = 0; i < num_workers; i++) {
         pipe(pipes[i]);
         pid_t pid = fork();
@@ -68,7 +70,7 @@ int main(int argc, char *argv[]) {
         wait(NULL);
     }
 
-    // Merge chunks
+    // Merge chunks 
     int merged_size = chunk_size;
     for (int i = 1; i < num_workers; i++) {
         int right_end = (i == num_workers - 1) ? array_size - 1 : (i + 1) * chunk_size - 1;
@@ -89,3 +91,4 @@ int main(int argc, char *argv[]) {
     free(array);
     return 0;
 }
+
