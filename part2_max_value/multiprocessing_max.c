@@ -5,7 +5,7 @@
 #include <sys/mman.h>
 #include <semaphore.h>
 #include <time.h>
-
+// Each process computes local max and updates global max
 int main(int argc, char *argv[]) {
     if (argc != 3) {
         fprintf(stderr, "Usage: %s <num_workers> <array_size>\n", argv[0]);
@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
     sem_init(sem, 1, 1); // shared between processes
 
     clock_t start = clock();
-
+// Create Child Processes
     for (int i = 0; i < num_workers; i++) {
         pid_t pid = fork();
 
@@ -51,7 +51,7 @@ int main(int argc, char *argv[]) {
             exit(0);
         }
     }
-
+// Wait for Child Processes
     for (int i = 0; i < num_workers; i++) wait(NULL);
 
     clock_t end = clock();
@@ -67,3 +67,4 @@ int main(int argc, char *argv[]) {
     free(array);
     return 0;
 }
+
