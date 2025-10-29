@@ -67,14 +67,14 @@ int main(int argc, char *argv[]) {
     int ids[num_workers];
 
     clock_t start = clock();
-
+// Create worker threads
     for (int i = 0; i < num_workers; i++) {
         ids[i] = i;
         pthread_create(&threads[i], NULL, worker_sort, &ids[i]);
     }
-
+// Wait for threads to finish
     for (int i = 0; i < num_workers; i++) pthread_join(threads[i], NULL);
-
+// Merge Results
     merge_chunks();
 
     clock_t end = clock();
@@ -91,5 +91,6 @@ int main(int argc, char *argv[]) {
     free(array);
     return 0;
 }
+
 
 
